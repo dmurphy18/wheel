@@ -254,7 +254,8 @@ class bdist_wheel(Command):
             if plat_name in ('linux-x86_64', 'linux_x86_64') and sys.maxsize == 2147483647:
                 plat_name = 'linux_i686'
 
-        plat_name = plat_name.lower().replace('-', '_').replace('.', '_')
+        plat_name = plat_name.replace('-', '_').replace('.', '_')
+        plat_name = plat_name.lower()
 
         if self.root_is_pure:
             if self.universal:
@@ -273,6 +274,7 @@ class bdist_wheel(Command):
             else:
                 abi_tag = str(get_abi_tag()).lower()
             tag = (impl, abi_tag, plat_name)
+            chktag = (impl, abi_tag, plat_name.lower())
             supported_tags = [(t.interpreter, t.abi, t.platform)
                               for t in tags.sys_tags()]
             assert tag in supported_tags, "would build wheel with unsupported tag {}".format(tag)
